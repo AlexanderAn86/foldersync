@@ -1,0 +1,8 @@
+# никогда не коммитить ключи и токены
+rclone.conf
+*.conf.bak
+.foldersync/
+logs/
+*.log
+.DS_Store
+Thumbs.db
