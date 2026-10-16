@@ -55,6 +55,10 @@ while IFS= read -r line || [ -n "$line" ]; do
     if [ $INIT -eq 1 ]; then
       log "INIT [$ID] $LOCAL <=> $REMOTE"
       rclone mkdir "$REMOTE" >> "$LOG" 2>&1
+      # bisync cannot work with an empty folder on both sides: add a marker file
+      if [ -z "$(ls -A "$LOCAL" 2>/dev/null)" ] && [ -z "$(rclone lsf "$REMOTE" 2>/dev/null | head -1)" ]; then
+        echo "This folder is synced by foldersync. Do not delete this file while the folder is empty." > "$LOCAL/_foldersync.txt"
+      fi
       if rclone "${ARGS[@]}" --resync --resync-mode newer; then touch "$STATE/$ID.ok"; log "INIT OK [$ID]"
       else log "ERROR INIT [$ID]"; notify "Ошибка первой синхронизации: $LOCAL"; ERRORS=$((ERRORS+1)); fi
     else

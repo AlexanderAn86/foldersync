@@ -56,6 +56,11 @@ try {
       if ($Init) {
         Write-Log "INIT [$id] $local <=> $remote"
         & $rclone mkdir $remote 2>&1 | Out-Null
+        # bisync cannot work with an empty folder on both sides: add a marker file
+        $remoteFiles = & $rclone lsf $remote 2>$null | Select-Object -First 1
+        if (-not (Get-ChildItem -LiteralPath $local -Force | Select-Object -First 1) -and -not $remoteFiles) {
+          Set-Content -LiteralPath (Join-Path $local '_foldersync.txt') -Value 'This folder is synced by foldersync. Do not delete this file while the folder is empty.' -Encoding UTF8
+        }
         & $rclone @rargs '--resync' '--resync-mode' 'newer'
         if ($LASTEXITCODE -eq 0) { New-Item -ItemType File -Force -Path $ok | Out-Null; Write-Log "INIT OK [$id]" }
         else { Write-Log "ERROR INIT [$id]"; Show-Note "Ошибка первой синхронизации: $local"; $errors++ }
