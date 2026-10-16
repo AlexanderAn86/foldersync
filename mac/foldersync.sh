@@ -48,7 +48,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     --create-empty-src-dirs --resilient --recover --max-lock 2m
     --compare size,modtime --conflict-resolve newer --conflict-loser num --conflict-suffix conflict --suffix-keep-extension
     --backup-dir1 "$BACKUP_LOCAL/$ID" --backup-dir2 "$RNAME:_foldersync_backup/$ID"
-    --exclude ".DS_Store" --exclude "Thumbs.db" --exclude "desktop.ini" --exclude "~\$*" --exclude ".~lock.*" --exclude "*.tmp"
+    --exclude ".DS_Store" --exclude "Thumbs.db" --exclude "desktop.ini" --exclude "~\$*" --exclude ".~lock.*" --exclude "*.tmp" --exclude ".tmp.drivedownload/**" --exclude ".tmp.driveupload/**"
     --drive-skip-gdocs --log-file "$LOG" --log-level NOTICE )
 
   if [ ! -f "$STATE/$ID.ok" ]; then

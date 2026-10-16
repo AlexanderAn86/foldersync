@@ -49,7 +49,7 @@ try {
       '--compare','size,modtime',
       '--conflict-resolve','newer','--conflict-loser','num','--conflict-suffix','conflict','--suffix-keep-extension',
       '--backup-dir1', (Join-Path $BackupL $id), '--backup-dir2', "$($rname):_foldersync_backup/$id",
-      '--exclude','.DS_Store','--exclude','Thumbs.db','--exclude','desktop.ini','--exclude','~$*','--exclude','.~lock.*','--exclude','*.tmp',
+      '--exclude','.DS_Store','--exclude','Thumbs.db','--exclude','desktop.ini','--exclude','~$*','--exclude','.~lock.*','--exclude','*.tmp','--exclude','.tmp.drivedownload/**','--exclude','.tmp.driveupload/**',
       '--drive-skip-gdocs','--log-file', $Log, '--log-level','NOTICE')
     $ok = Join-Path $State "$id.ok"
     if (-not (Test-Path $ok)) {
